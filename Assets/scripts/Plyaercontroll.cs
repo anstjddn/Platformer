@@ -13,6 +13,8 @@ public class Plyaercontroll : MonoBehaviour
     [SerializeField] private float Maxspeed;
     private Animator anim;
     private SpriteRenderer render;
+    [SerializeField] private bool isGrounded;
+    [SerializeField] LayerMask groundLayer;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,6 +24,10 @@ public class Plyaercontroll : MonoBehaviour
     private void Update()
     {
         Move();
+    }
+    private void FixedUpdate()
+    {
+        GroundCheck();
     }
 
     private void Move()
@@ -51,13 +57,32 @@ public class Plyaercontroll : MonoBehaviour
         rb.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
         
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+   /*private void OnTriggerEnter2D(Collider2D collision)
     {
-        anim.SetBool("IsGrounded", true);
+        isGrounded = true;
+        anim.SetBool("IsGrounded",true);
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
+        isGrounded = false;
         anim.SetBool("IsGrounded", false);
+    }*/
+   private void GroundCheck()
+    {
+        RaycastHit2D hit =Physics2D.Raycast(transform.position, Vector2.down,1.5f);
+        if(hit.collider != null)
+        {
+            isGrounded = true;
+            anim.SetBool("IsGrounded", true);
+            
+        }
+        else
+        {
+            isGrounded = false;
+            anim.SetBool("IsGrounded", false);
+        }
     }
+
+
 
 }
