@@ -69,17 +69,23 @@ public class Plyaercontroll : MonoBehaviour
     }*/
    private void GroundCheck()
     {
-        RaycastHit2D hit =Physics2D.Raycast(transform.position, Vector2.down,1.5f);
+        RaycastHit2D hit =Physics2D.Raycast(transform.position, Vector2.down,1.5f,groundLayer);     // 시작위치, 레이저로 확인할 위치, 체크길이
+        // 결과는 레이캐스트 2d로 나온다. 따라서 hit만들어준다.
+        // 레이저를 일자로 쏘는방식말고 여러캐스트 방식이있다.
+        // 레이캐스트 올은 범위에 있는애들 전부 훍는다
+        // 레이캐스트 레이저만 범위에 먼저 땋는애만 
         if(hit.collider != null)
         {
+        
             isGrounded = true;
             anim.SetBool("IsGrounded", true);
-            
+            Debug.DrawRay(transform.position, new Vector3(hit.point.x, hit.point.y, 0) - transform.position, Color.red);
         }
         else
         {
             isGrounded = false;
             anim.SetBool("IsGrounded", false);
+            Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.green);
         }
     }
 
